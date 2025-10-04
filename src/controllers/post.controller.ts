@@ -58,11 +58,7 @@ const updateCommentSchema = z.object({
 
 export const uploadMiddleware = upload.single('media');
 
-/**
- * Create a new post
- * @param req Express Request object
- * @param res Express Response object
- */
+
 export const createPost = async (req: Request, res: Response): Promise<void> => {
   try {
     if (!req.user) {
@@ -123,11 +119,7 @@ export const createPost = async (req: Request, res: Response): Promise<void> => 
   }
 };
 
-/**
- * Get all posts (paginated)
- * @param req Express Request object
- * @param res Express Response object
- */
+
 export const getAllPosts = async (req: Request, res: Response): Promise<void> => {
   try {
     const page = parseInt(req.query.page as string) || 1;
@@ -173,11 +165,7 @@ export const getAllPosts = async (req: Request, res: Response): Promise<void> =>
   }
 };
 
-/**
- * Get single post with comments
- * @param req Express Request object
- * @param res Express Response object
- */
+
 export const getPostById = async (req: Request, res: Response): Promise<void> => {
   try {
     const { id } = req.params;
@@ -230,11 +218,7 @@ export const getPostById = async (req: Request, res: Response): Promise<void> =>
   }
 };
 
-/**
- * Update post (own posts only)
- * @param req Express Request object
- * @param res Express Response object
- */
+
 export const updatePost = async (req: Request, res: Response): Promise<void> => {
   try {
     if (!req.user) {
@@ -299,11 +283,7 @@ export const updatePost = async (req: Request, res: Response): Promise<void> => 
   }
 };
 
-/**
- * Delete post (own posts only)
- * @param req Express Request object
- * @param res Express Response object
- */
+
 export const deletePost = async (req: Request, res: Response): Promise<void> => {
   try {
     if (!req.user) {
@@ -342,11 +322,7 @@ export const deletePost = async (req: Request, res: Response): Promise<void> => 
   }
 };
 
-/**
- * Like/unlike post
- * @param req Express Request object
- * @param res Express Response object
- */
+
 export const likePost = async (req: Request, res: Response): Promise<void> => {
   try {
     if (!req.user) {
@@ -402,11 +378,7 @@ export const likePost = async (req: Request, res: Response): Promise<void> => {
   }
 };
 
-/**
- * Create comment on post
- * @param req Express Request object
- * @param res Express Response object
- */
+
 export const createComment = async (req: Request, res: Response): Promise<void> => {
   try {
     if (!req.user) {
@@ -477,11 +449,7 @@ export const createComment = async (req: Request, res: Response): Promise<void> 
   }
 };
 
-/**
- * Get all comments for a post
- * @param req Express Request object
- * @param res Express Response object
- */
+
 export const getCommentsByPostId = async (req: Request, res: Response): Promise<void> => {
   try {
     const { postId } = req.params;
@@ -541,11 +509,7 @@ export const getCommentsByPostId = async (req: Request, res: Response): Promise<
   }
 };
 
-/**
- * Update comment (own comments only)
- * @param req Express Request object
- * @param res Express Response object
- */
+
 export const updateComment = async (req: Request, res: Response): Promise<void> => {
   try {
     if (!req.user) {
@@ -610,11 +574,7 @@ export const updateComment = async (req: Request, res: Response): Promise<void> 
   }
 };
 
-/**
- * Delete comment (own comments only)
- * @param req Express Request object
- * @param res Express Response object
- */
+
 export const deleteComment = async (req: Request, res: Response): Promise<void> => {
   try {
     if (!req.user) {
@@ -664,11 +624,7 @@ export const deleteComment = async (req: Request, res: Response): Promise<void> 
   }
 };
 
-/**
- * Like/unlike comment
- * @param req Express Request object
- * @param res Express Response object
- */
+
 export const likeComment = async (req: Request, res: Response): Promise<void> => {
   try {
     if (!req.user) {
