@@ -1,0 +1,100 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// Enum for user roles
+enum Role {
+  OFFICIAL
+  TEACHER
+  STUDENT
+}
+
+// User model
+model User {
+  id           String   @id @default(uuid())
+  email        String   @unique
+  password     String
+  name         String
+  role         Role
+  position     String? // For officials: Director, Principal, etc.
+  branch       String? // For teachers and students: CSD, CSE, IT, MECH, etc.
+  profileImage String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  // Relations
+  sentMessages     Message[]      @relation("sentMessages")
+  receivedMessages Message[]      @relation("receivedMessages")
+  posts            Post[]
+  comments         Comment[]
+  notifications    Notification[]
+}
+
+// Message model
+model Message {
+  id           String   @id @default(uuid())
+  sender       User     @relation("sentMessages", fields: [senderId], references: [id])
+  senderId     String
+  content      String
+  messageType  String // INDIVIDUAL or GROUP
+  targetRole   Role? // STUDENT, TEACHER, or null for all
+  targetBranch String? // specific branch or null for all
+  recipients   User[]   @relation("receivedMessages")
+  isRead       Boolean  @default(false)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+// Post model
+model Post {
+  id           String   @id @default(uuid())
+  author       User     @relation(fields: [authorId], references: [id])
+  authorId     String
+  content      String
+  likes        Int      @default(0)
+  likedBy      String[] // array of user IDs
+  commentCount Int      @default(0)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  // Relations
+  comments Comment[]
+}
+
+// Comment model
+model Comment {
+  id        String   @id @default(uuid())
+  post      Post     @relation(fields: [postId], references: [id])
+  postId    String
+  author    User     @relation(fields: [authorId], references: [id])
+  authorId  String
+  content   String
+  likes     Int      @default(0)
+  likedBy   String[] // array of user IDs
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// Notification model
+model Notification {
+  id          String   @id @default(uuid())
+  user        User     @relation(fields: [userId], references: [id])
+  userId      String
+  type        String // MESSAGE, POST, ANNOUNCEMENT
+  referenceId String // references message/post
+  content     String
+  isRead      Boolean  @default(false)
+  createdAt   DateTime @default(now())
+}
